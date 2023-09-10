@@ -1,3 +1,4 @@
+import { resolvePtr } from "dns";
 
 class Result<T>{
   data?: T;
@@ -54,16 +55,7 @@ const startup_info: StartupInfo = { pid: process.pid, port: 3000, bun_version: B
 console.log(`Startup info: ${JSON.stringify(startup_info)}`)
 
 Bun.serve({
-  port: 3000,
-  fetch() {
-    return new Response(
-      JSON.stringify(ok(fighters)),
-      {
-        headers: {
-          "Content-Type": "application/json; charset=utf-8",
-        },
-      }
-    );
-  },
+  port: startup_info.port,
+  fetch: () => Response.json(ok(fighters))
 });
 
